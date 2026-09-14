@@ -1,0 +1,20 @@
+{
+  "name": "vtuber-songbook",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "admin": "node server/index.mjs",
+    "admin:init": "node server/init-admin.mjs",
+    "admin:change": "node server/change-admin.mjs"
+  },
+  "devDependencies": {
+    "astro": "^5.14.1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "howler": "^2.2.4"
+  }
+}

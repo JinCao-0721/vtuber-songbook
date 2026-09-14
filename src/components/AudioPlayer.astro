@@ -1,0 +1,66 @@
+---
+import type { AudioTrack } from '../data/songs';
+
+const { tracks, artistName = 'VTuber', songTitle = '' } = Astro.props as { tracks: AudioTrack[]; artistName?: string; songTitle?: string };
+const displayTracks = tracks.map((track) => ({ ...track, label: track.label === 'VTuber 翻唱' ? `${artistName} 翻唱` : track.label }));
+---
+
+{displayTracks.length > 0 ? (
+  <div class="player" data-player data-song-title={songTitle}>
+    <div class="track-switcher" role="tablist" aria-label="选择音轨">
+      {displayTracks.map((track, index) => (
+        <button class:list={['track-button', { active: index === 0 }]} type="button" data-track-index={index} aria-selected={index === 0}>
+          <span class="track-dot"></span>{track.label}
+        </button>
+      ))}
+    </div>
+    <div class="player-controls"><audio controls preload="metadata" src={displayTracks[0].src} data-audio>
+      你的浏览器不支持音频播放。
+    </audio><label class="loop-control"><input type="checkbox" data-loop /> 循环</label></div>
+    <p class="player-source" data-source>来源：{displayTracks[0].source}</p>
+    <script type="application/json" data-tracks set:html={JSON.stringify(displayTracks)}></script>
+  </div>
+) : (
+  <div class="player player-empty"><span class="empty-icon">♫</span><span>音频整理中</span></div>
+)}
+
+<script>
+  document.querySelectorAll('[data-player]').forEach((player) => {
+    const audio = player.querySelector('[data-audio]');
+    const source = player.querySelector('[data-source]');
+    const tracks = JSON.parse(player.querySelector('[data-tracks]').textContent);
+    player.querySelectorAll('[data-track-index]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const track = tracks[Number(button.dataset.trackIndex)];
+        const currentTime = audio.currentTime;
+        audio.src = track.src;
+        audio.currentTime = currentTime;
+        audio.pause();
+        source.textContent = `来源：${track.source}`;
+        window.dispatchEvent(new CustomEvent('songbook:track', { detail: { ...track, songTitle: player.dataset.songTitle } }));
+        player.querySelectorAll('[data-track-index]').forEach((item) => {
+          const active = item === button;
+          item.classList.toggle('active', active);
+          item.setAttribute('aria-selected', String(active));
+        });
+      });
+    });
+    player.querySelector('[data-loop]').addEventListener('change', (event) => { audio.loop = event.target.checked; });
+  });
+</script>
+
+<style>
+  .player { display: grid; gap: .72rem; margin-top: .9rem; padding: .75rem; border: 1px solid #eee8f1; border-radius: 14px; background: linear-gradient(135deg, #fcf9fd, #f7f2fa); }
+  .player-controls { display: flex; align-items: center; gap: .55rem; }
+  .track-switcher { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .track-button { display: inline-flex; align-items: center; border: 1px solid #e8dfeb; background: #fff; color: var(--muted); border-radius: 8px; padding: .42rem .62rem; cursor: pointer; font: inherit; font-size: .7rem; transition: border-color .18s, color .18s, background .18s, transform .18s; }
+  .track-button:hover { border-color: #dba0be; transform: translateY(-1px); }
+  .track-button.active { border-color: var(--pink); background: var(--pink-soft); color: var(--ink); box-shadow: 0 4px 10px #e083ae18; }
+  .track-dot { width: .38rem; height: .38rem; display: inline-block; border-radius: 50%; background: currentColor; margin-right: .38rem; }
+  audio { width: 100%; height: 2.15rem; border-radius: 8px; }
+  .loop-control { flex: 0 0 auto; display: flex; align-items: center; gap: .3rem; color: var(--muted); font-size: .68rem; white-space: nowrap; }
+  .loop-control input { accent-color: var(--pink); }
+  .player-source { color: #a69eac; font-size: .64rem; margin: 0; letter-spacing: .01em; }
+  .player-empty { display: flex; align-items: center; gap: .55rem; min-height: 2.5rem; color: var(--muted); font-size: .8rem; }
+  .empty-icon { color: var(--pink); font-size: 1.2rem; }
+</style>

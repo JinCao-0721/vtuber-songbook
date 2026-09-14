@@ -1,0 +1,207 @@
+VTuber 歌单网站方案（第一、第二阶段）
+
+一、项目目标
+
+建立一个公开的 VTuber 歌单网站，让观众可以快速查看 VTuber 会唱的歌曲。原唱信息和音频用于帮助观众识别原曲，公开翻唱录音属于可选补充。
+
+网站展示歌曲信息、封面、歌词、官方平台链接，并通过 HTML5 播放器播放已经整理到网站媒体目录的音频。音频文件只用于本站歌曲播放，下载和发布前应确认拥有相应授权。
+
+二、技术方案
+
+1. 前端框架：Astro
+   官网：https://astro.build/
+   文档：https://docs.astro.build/
+
+2. 歌单数据：JSON 或 Markdown
+   每首歌曲保存为一条数据，并用 `vupId` 归属到对应 VTuber，方便多域名部署时隔离数据。
+
+3. 播放方式：优先播放本站 `/media/` 下的音频；原唱按可用的标准、高品质、无损版本显示，缺少某种清晰度时隐藏对应选项；Bilibili 翻唱音频有文件时显示，没有文件时仍保留“会唱”歌曲和官方链接。
+
+4. 部署方式：Astro 构建为静态网页后，通过服务器上的 Caddy 或 Nginx 发布。
+   每个域名使用一个 `PUBLIC_SITE_ID` 构建；后台使用相同的 `SITE_ID`。
+
+三、第一阶段：基础歌单网站
+
+目标：先做出可以访问和浏览的 VTuber 歌单页。
+
+页面结构：
+
+/
+├─ 首页：VTuber 头像、简介、最新歌曲
+├─ /playlist：全部歌曲
+├─ /covers：翻唱歌曲
+├─ /originals：原创歌曲
+├─ /song/歌曲名称：单曲详情页
+└─ /about：个人介绍和社交链接
+
+歌曲卡片显示：
+
+- 封面
+- 歌曲名称
+- 类型：原创、翻唱、BGM
+- 原唱和作曲信息
+- 发布时间
+- 歌曲简介
+- 在线播放器：优先选择原唱清晰度，也可切换到已有的 VTuber 翻唱录音
+- Bilibili、YouTube、QQ 音乐、网易云音乐链接
+
+推荐的歌曲数据格式：
+
+{
+  "title": "晴天",
+  "type": "翻唱",
+  "originalArtist": "周杰伦",
+  "cover": "/covers/qingtian.jpg",
+  "releaseDate": "2026-01-01",
+  "description": "我的翻唱版本",
+  "audio": [
+    {
+      "src": "/media/original/qingtian-128.mp3",
+      "label": "原唱 · 标准",
+      "quality": "128K",
+      "source": "qqmusic"
+    },
+    {
+      "src": "/media/original/qingtian-320.mp3",
+      "label": "原唱 · 高品质",
+      "quality": "320K",
+      "source": "qqmusic"
+    },
+    {
+      "src": "/media/original/qingtian-lossless.flac",
+      "label": "原唱 · 无损",
+      "quality": "FLAC",
+      "source": "qqmusic"
+    },
+    {
+      "src": "/media/covers/qingtian-vtuber.mp3",
+      "label": "VTuber 翻唱",
+      "source": "bilibili",
+      "sourceVideo": "https://www.bilibili.com/video/BV...",
+      "clip": { "start": "00:01:12", "end": "00:05:03" }
+    }
+  ],
+  "links": {
+    "bilibili": "https://www.bilibili.com/...",
+    "youtube": "https://www.youtube.com/...",
+    "netease": "https://music.163.com/...",
+    "qq": "https://y.qq.com/..."
+  }
+}
+
+第一阶段完成标准：
+
+- 观众可以通过域名打开网站
+- 可以浏览全部歌曲
+- 可以按原创、翻唱、BGM 分类
+- 每首歌曲都有封面和平台链接
+- 手机端可以正常查看
+- 页面使用 VTuber 自己的颜色、字体和视觉风格
+
+四、第二阶段：搜索和单曲详情
+
+目标：让观众更快找到歌曲，并获得完整的歌曲信息。
+
+新增功能：
+
+1. 歌曲搜索
+   - 按歌曲名称搜索
+   - 按原唱搜索
+   - 按标签搜索
+
+2. 歌曲筛选
+   - 全部
+   - 原创
+   - 翻唱
+   - BGM
+   - 按发布时间排序
+   - 按歌曲名称排序
+
+3. 单曲详情页
+   - 大尺寸封面
+   - 歌曲名称和类型
+   - 原唱、作曲、编曲信息
+   - 翻唱说明
+   - 发布时间
+   - 歌词
+   - 官方平台播放按钮
+   - 相关歌曲推荐
+
+4. 歌词展示
+   - 歌词可以写在 Markdown 文件中
+   - 支持普通歌词和带时间轴歌词
+   - 歌词页面与单曲页面绑定
+
+5. 页面优化
+   - 添加网站图标和社交分享图片
+   - 设置歌曲页面的标题和描述
+   - 添加返回歌单按钮
+   - 优化手机端布局
+
+6. 在线播放器
+   - 使用原生 `<audio controls preload="metadata">`，不依赖第三方播放器服务。
+   - 同一首歌可以有多条 `original` 清晰度和一条可选的 `cover` 音轨，按钮切换时保留播放位置。
+   - 音频文件放在 `public/media/original/` 和 `public/media/covers/`，构建后由 Caddy/Nginx 提供 Range 请求和缓存。
+   - 播放器显示音轨名称、时长、加载/错误状态；音频不可用时仍显示官方平台链接。
+
+第二阶段完成标准：
+
+- 观众可以搜索歌曲
+- 观众可以筛选原创和翻唱
+- 每首歌曲都有独立详情页
+- 可以阅读歌词和歌曲介绍
+- 可以在单曲页在线播放原唱和 VTuber 翻唱
+- 音频无法加载时可以一键打开官方播放页面
+- 分享单曲链接时能显示正确的封面和标题
+
+五、推荐的目录结构
+
+src/
+├─ content/
+│  └─ songs/
+│     ├─ qingtian.md
+│     ├─ original-song-01.md
+│     └─ cover-song-02.md
+├─ pages/
+│  ├─ index.astro
+│  ├─ playlist.astro
+│  ├─ covers.astro
+│  ├─ originals.astro
+│  └─ song/[slug].astro
+├─ components/
+│  ├─ SongCard.astro
+│  ├─ SongGrid.astro
+│  ├─ SearchBox.astro
+│  └─ PlatformLinks.astro
+└─ public/
+   ├─ covers/
+   ├─ media/
+   │  ├─ original/
+   │  └─ covers/
+   └─ avatar.png
+
+六、发布流程
+
+1. 新增一首歌曲的 Markdown 数据文件。
+2. 放入歌曲封面。
+3. 使用 `qqmusic_download_test.py` 获取授权的原唱音频，放入 `public/media/original/`。
+4. 使用 `bilibili_download_test.py` 下载 B 站视频音频并按时间段截取 MP3，放入 `public/media/covers/`。
+5. 在数据文件的 `audio` 字段填写音频路径、来源和翻唱片段信息，并填写官方平台链接和歌词。
+6. 执行 Astro 构建命令，将生成的 `dist` 目录发布到服务器。
+
+音频获取工具
+
+- 原唱：现有 `qqmusic_download_test.py`，输出文件复制到 `public/media/original/`。
+- 翻唱：新增 `bilibili_download_test.py`，底层使用 `yt-dlp` 和 `ffmpeg`，支持 B 站 URL、`--start`、`--end`、Cookie 文件和 MP3 音质。
+- 安装依赖：`python -m pip install -U yt-dlp`，并确保 `ffmpeg` 在 PATH 中。
+- 示例：`python bilibili_download_test.py --url "https://www.bilibili.com/video/BV..." --start 00:01:12 --end 00:05:03 --output public/media/covers`
+
+七、最终选择
+
+第一、第二阶段只使用 Astro 即可，不需要 Navidrome、Jellyfin 或 AzuraCast。
+
+最终网站定位：
+
+一个具有 VTuber 个人视觉风格的公开歌曲目录和翻唱展示页。
+
+QQ 音乐原唱和 B 站翻唱的本地文件会作为本站播放器的媒体资源发布；原始下载文件、Cookie 和未整理的临时文件继续放在项目外，不提交到公开仓库。

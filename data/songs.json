@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "live-in-sirius",
+    "vupId": "ii7",
+    "qqPlaylistId": "9778393815",
+    "qqSongMid": "002FQBDS4EBo94",
+    "bilibiliBvid": "BV12Ntp6LEyd",
+    "title": "\u4f4f\u5728\u5929\u72fc\u661f\u7684\u90a3\u4e2a\u4eba",
+    "type": "\u7ffb\u5531",
+    "artist": "ii7",
+    "originalArtist": "\u9ec4\u7f8e\u5a77",
+    "date": "2026-09-14",
+    "duration": "04:25",
+    "description": "\u6765\u81ea Bilibili BV12Ntp6LEyd \u7684\u7ffb\u5531\u97f3\u9891\uff0c\u5df2\u6574\u7406\u4e3a MP3\u3002",
+    "accent": "#f0a6ca",
+    "audio": [
+      {
+        "src": "/media/original/live-in-sirius-original-128.mp3",
+        "label": "\u539f\u66f2 \u00b7 \u6807\u51c6",
+        "source": "QQ \u97f3\u4e50\u6b4c\u5355 9778393815",
+        "quality": "128K"
+      },
+      {
+        "src": "/media/original/live-in-sirius-original-320.mp3",
+        "label": "\u539f\u66f2 \u00b7 \u9ad8\u54c1\u8d28",
+        "source": "QQ \u97f3\u4e50\u6b4c\u5355 9778393815",
+        "quality": "320K"
+      },
+      {
+        "src": "/media/original/live-in-sirius-original-lossless.flac",
+        "label": "\u539f\u66f2 \u00b7 \u65e0\u635f",
+        "source": "QQ \u97f3\u4e50\u6b4c\u5355 9778393815",
+        "quality": "FLAC"
+      },
+      {
+        "src": "/media/covers/\u3010ii7\u7ffb\u5531\u3011\u4f4f\u5728\u5929\u72fc\u661f\u7684\u90a3\u4e2a\u4eba_BV12Ntp6LEyd.mp3",
+        "label": "ii7 \u7ffb\u5531",
+        "source": "Bilibili"
+      }
+    ],
+    "links": {
+      "bilibili": "https://www.bilibili.com/video/BV12Ntp6LEyd",
+      "qq": "https://y.qq.com/n/ryqq/songDetail/002FQBDS4EBo94"
+    },
+    "categories": [
+      "\u56fd\u8bed",
+      "\u6d41\u884c"
+    ]
+  },
+  {
+    "slug": "melody-remix",
+    "vupId": "ii7",
+    "title": "Melody Remix",
+    "type": "\u7ffb\u5531",
+    "artist": "ii7",
+    "originalArtist": "\u9526\u96f6",
+    "date": "2026-09-14",
+    "duration": "03:52",
+    "description": "QQ \u97f3\u4e50\u6b4c\u5355\u4e2d\u7684\u539f\u66f2\uff1b\u5bf9\u5e94\u7ffb\u5531\u89c6\u9891\u4e3a Bilibili BV1Q2gK6hE3A\u3002",
+    "accent": "#ffc58f",
+    "audio": [
+      {
+        "src": "/media/original/melody-remix-original-128.mp3",
+        "label": "\u539f\u66f2 \u00b7 \u6807\u51c6",
+        "source": "QQ \u97f3\u4e50\u6b4c\u5355 9778393815",
+        "quality": "128K"
+      },
+      {
+        "src": "/media/original/melody-remix-original-320.mp3",
+        "label": "\u539f\u66f2 \u00b7 \u9ad8\u54c1\u8d28",
+        "source": "QQ \u97f3\u4e50\u6b4c\u5355 9778393815",
+        "quality": "320K"
+      },
+      {
+        "src": "/media/covers/melody-remix-vtuber-cover.mp3",
+        "label": "ii7 \u7ffb\u5531",
+        "source": "Bilibili BV1Q2gK6hE3A"
+      }
+    ],
+    "links": {
+      "bilibili": "https://www.bilibili.com/video/BV1Q2gK6hE3A",
+      "qq": "https://y.qq.com/n/ryqq/songDetail/004NWXo10xNhlH"
+    },
+    "qqPlaylistId": "9778393815",
+    "qqSongMid": "004NWXo10xNhlH",
+    "bilibiliBvid": "BV1Q2gK6hE3A",
+    "categories": [
+      "\u56fd\u8bed",
+      "\u6d41\u884c"
+    ]
+  }
+]

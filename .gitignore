@@ -1,0 +1,11 @@
+# 本地凭据和下载测试产物
+qqmusic_cookie.txt
+node_modules/
+dist/
+.astro/
+__pycache__/
+downloads/
+qqmusic_cookie.txt
+cookies.txt
+*.cookies.txt
+data/admin-users.json
